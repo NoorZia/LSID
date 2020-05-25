@@ -68,12 +68,8 @@ class LSID(Dataset):
         target =  self.data[index]['gt']
     
         # random crop
-    
-        i = random.randint(0, image.shape[0] - self.patch_size)
-        j = random.randint(0, image.shape[1] - self.patch_size)
         i,j = random.randint(0, image.shape[0] - self.patch_size), random.randint(0, image.shape[1] - self.patch_size)
     
-        print(i,j, self.patch_size)
         image = image[i:i+self.patch_size, j:j+self.patch_size, :]
         target = target[ i*2:i*2 + self.patch_size*2, j*2:j*2 + self.patch_size*2, :]
 
@@ -86,8 +82,7 @@ class LSID(Dataset):
             angle = random.randint(-10,10)
             image = ndimage.rotate(image,angle, reshape=False) # set to false to preserve size
             target = ndimage.rotate(target, angle, reshape=False)
-        print("image",image.shape, "target",target.shape)
-
+       
         image = torch.from_numpy(image)
         target = torch.from_numpy(target)
 
