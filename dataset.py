@@ -11,8 +11,12 @@ patch_size = 512
 
 
 class LSID(Dataset):
-    def __init__(self, data_path, subset, patch_size=512):
+    def __init__(self, data_path, subset, patch_size=512, max_nr_images_per_gt_and_shutter=100):
         self.data_path = data_path
+        # Max number of images with the same gt image AND same shutter speed
+        # Number of images in Sony training set for different values of this parameter:
+        # [280, 559, 725, 888, 1050, 1212, 1374, 1536, 1696, 1853, 1862, 1865, 1865, 1865]
+        self.max_nr_images_per_gt_and_shutter = max_nr_images_per_gt_and_shutter
         self.data = self.__make_dataset(subset)
         self.patch_size = patch_size
 
@@ -37,12 +41,18 @@ class LSID(Dataset):
         files = open(join(self.data_path, file_path), 'r').readlines()
 
         dataset = []
-        for f in files:  # TODO: change back!!
+        for f in files:
             file_list = f.split()
+
+            # Reduce set size: continue the loop if condition is met.
+            image_path = file_list[0]  # Example: './Sony/short/00001_06_0.1s.ARW'
+            image_number_string = image_path.split(sep='_')[1]
+            image_number = int(image_number_string)
+            if image_number > self.max_nr_images_per_gt_and_shutter:
+                continue
+
             file_path_short = join(self.data_path, file_list[0])
             file_path_long = join(self.data_path, file_list[1])
-
-            
 
             exposure_ratio = float(file_list[1].split("_")[-1][:-5]) / float(file_list[0].split("_")[-1][:-5])
             iso = file_list[2]
@@ -68,7 +78,6 @@ class LSID(Dataset):
         image = rawpy.imread(file_path_short)
         image = self.__pack_bayer(image)
         image = image * min(self.data[index]['exposure_ratio'], 300)
-
 
         # random crop
         i, j = random.randint(0, image.shape[0] - self.patch_size), random.randint(0, image.shape[1] - self.patch_size)
@@ -103,12 +112,8 @@ class LSID(Dataset):
         return len(self.data)
 
 
-#train_data = LSID("./", "train")
+#train_data = LSID("./", "train", patch_size=512, max_nr_images_per_gt=3)
 #data_loader = torch.utils.data.DataLoader(train_data, batch_size=2, shuffle=None)
 
 #for i, (inputs, targets) in enumerate(data_loader):
 #    print(i, inputs.shape, targets.shape)
-
-
-
-
