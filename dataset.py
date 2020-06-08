@@ -15,7 +15,7 @@ class LSID(Dataset):
         self.data_path = data_path
         # Max number of images with the same gt image AND same shutter speed
         # Number of images in Sony training set for different values of this parameter:
-        # [280, 559, 725, 888, 1050, 1212, 1374, 1536, 1696, 1853, 1862, 1865, 1865, 1865]
+        # [0, 280, 559, 725, 888, 1050, 1212, 1374, 1536, 1696, 1853, 1862, 1865, 1865, 1865]
         self.max_nr_images_per_gt_and_shutter = max_nr_images_per_gt_and_shutter
         self.data = self.__make_dataset(subset)
         self.patch_size = patch_size
