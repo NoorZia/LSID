@@ -38,7 +38,7 @@ class LSIDReduced(Dataset):
         files = open(join(self.data_path, file_path), 'r').readlines()
 
         dataset = []
-        for f in files[0:2]:
+        for f in files:
             file_list = f.split()
             # Example: ['./Sony/short/00001_00_0.04s.ARW', './Sony/long/00001_00_10s.ARW', 'ISO200', F8]
 
