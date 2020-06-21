@@ -7,8 +7,8 @@ data_path = "E:\LSID\dataset"
 nr_short_per_gt = 6  # number of images per ground truth in the reduced set(s)
 
 
-def reduce_dataset(subset='train', nr_short_per_gt=6):
-    file_path = "Sony_{}_list.txt".format(subset)  # The text file to be reduced
+def reduce_dataset(camera='Fuji', subset='train', nr_short_per_gt=6):
+    file_path = "{}_{}_list.txt".format(camera, subset)  # The text file to be reduced
     file_path_reduced = join(data_path, file_path)[:-4] + '_reduced_600.txt'  # where to save the new text file
 
     files = open(join(data_path, file_path), 'r').readlines()
@@ -61,9 +61,9 @@ def reduce_dataset(subset='train', nr_short_per_gt=6):
 
 
 def main():
-    for subset in ['train', 'val', 'test']:
+    for subset in ['train']:  # 'val', 'test'
         # Reduce dataset and create txt file
-        nr_gt, nr_short, nr_per_shutter = reduce_dataset(subset=subset, nr_short_per_gt=nr_short_per_gt)
+        nr_gt, nr_short, nr_per_shutter = reduce_dataset(camera='Fuji', subset=subset, nr_short_per_gt=nr_short_per_gt)
 
         # Print some stats
         print('==== {}_reduced ===='.format(subset))
