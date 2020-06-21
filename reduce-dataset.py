@@ -9,13 +9,14 @@ nr_short_per_gt = 6  # number of images per ground truth in the reduced set(s)
 
 def reduce_dataset(subset='train', nr_short_per_gt=6):
     file_path = "Sony_{}_list.txt".format(subset)  # The text file to be reduced
-    file_path_reduced = join(data_path, file_path)[:-4] + '_reduced.txt'  # where to save the new text file
+    file_path_reduced = join(data_path, file_path)[:-4] + '_reduced_600.txt'  # where to save the new text file
 
     files = open(join(data_path, file_path), 'r').readlines()
 
     gt_id_previous = None
     lines = []  # List to fill with lines corresponding to a specific ground truth image
 
+    num_images = 0
     with open(file_path_reduced, 'w') as new_txt_file:
         for f in files:
             file_list = f.split()
@@ -25,6 +26,10 @@ def reduce_dataset(subset='train', nr_short_per_gt=6):
 
             # If we looped over all images corresponding to one gt (they come in order)
             if gt_id != gt_id_previous and gt_id_previous is not None:
+                num_images += nr_short_per_gt
+                if num_images > 600:
+                    break
+
                 chosen_lines = lines
                 lines = []
 
