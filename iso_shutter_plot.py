@@ -3,8 +3,18 @@ import matplotlib.pyplot as plt
 import os
 
 # SETTINGS HIGHLY SPECIFIC FOR MY DATA & COMPUTER!! ==============
-data_path = r'E:\LSID\results\fuji200'
-file_list_path = os.path.join(data_path, 'Fuji_val_list.txt')
+# data_path = r'E:\LSID\results\fuji200'
+# file_list_path = os.path.join(data_path, 'Fuji_val_list.txt')
+# plot_title = 'Fuji, 200 epochs, RGB input'
+
+# data_path = r'E:\LSID\results\sony_reduced_results_500'
+# file_list_path = os.path.join(data_path, 'Sony_val_list.txt')
+# plot_title = 'Sony, 500 epochs, RAW input'
+
+data_path = r'E:\LSID\results\histogram_eval'
+file_list_path = os.path.join(data_path, 'Sony_val_list.txt')
+plot_title = 'Sony, 500 epochs, RAW input, histogram equalisation'
+
 
 # Load PSNR and SSIM values from the evaluation experiments.
 # The values occur in the same order as in the
@@ -33,7 +43,7 @@ for i, f in enumerate(files):
     f_number_arr[i] = f_number
 
 plt.figure(figsize=(15, 10))
-plt.suptitle('Fuji, 200 epochs, RGB input', fontweight="bold")
+plt.suptitle(plot_title, fontweight="bold")
 
 plt.subplots_adjust(hspace=0.3)
 
