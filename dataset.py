@@ -17,8 +17,10 @@ class LSID(Dataset):
         self.data_path = data_path
         self.gt_images = {}
         self.train_images = {}
+        self.subset = subset
         self.patch_size = patch_size
         self.data = self.__make_dataset(subset)
+        
         
         
 
@@ -91,10 +93,12 @@ class LSID(Dataset):
 
 
         # random crop
-        i, j = random.randint(0, image.shape[0] - self.patch_size), random.randint(0, image.shape[1] - self.patch_size)
+        
+        if self.subset == 'train':
+            i, j = random.randint(0, image.shape[0] - self.patch_size), random.randint(0, image.shape[1] - self.patch_size)
 
-        image = image[i:i + self.patch_size, j:j + self.patch_size, :]
-        target = target[i * 2:i * 2 + self.patch_size * 2, j * 2:j * 2 + self.patch_size * 2, :]
+            image = image[i:i + self.patch_size, j:j + self.patch_size, :]
+            target = target[i * 2:i * 2 + self.patch_size * 2, j * 2:j * 2 + self.patch_size * 2, :]
 
 
 
