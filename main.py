@@ -1,5 +1,5 @@
 import torch
-from dataset_reduced import LSID
+from dataset import LSID
 import os
 import numpy as np
 import time
