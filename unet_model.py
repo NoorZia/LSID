@@ -5,13 +5,7 @@ import torch.nn as nn
 class UNet(nn.Module):
     """
     U-net implementation based on https://github.com/milesial/Pytorch-UNet
-    TODO: Check input dimension order. This model assumes [B, C, H, W]
-
-    TODO: Weight initialisation?
-
-    TODO: Output format:
-        Number of channels? See Figure 3b in LSID paper
-        Activation function to restrict output to reasonable values?
+  
     """
 
     def __init__(self, in_channels=4, out_channels=12):
@@ -107,7 +101,7 @@ class Expand(nn.Module):
 
 
 class Outgoing(nn.Module):
-    """ 1x1 convolution TODO: Activation function? """
+    """ 1x1 convolution """
     def __init__(self, in_channels, out_channels):
         super().__init__()
         self.conv = nn.Conv2d(in_channels, out_channels, kernel_size=1)
