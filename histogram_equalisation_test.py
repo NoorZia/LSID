@@ -1,11 +1,9 @@
-from os.path import join
-
 import numpy as np
 import rawpy
 from skimage import color, exposure
 from matplotlib import pyplot as plt
 
-file_path_long = r'E:\LSID\results\histogram_eval\00100_00_30s.ARW'
+file_path_long = r'E:\LSID\dataset\Sony\long\00100_00_30s.ARW'
 
 gt_image = rawpy.imread(file_path_long)
 gt_image = gt_image.postprocess(use_camera_wb=True, half_size=False, no_auto_bright=True, output_bps=16)
