@@ -1,6 +1,9 @@
 """ Script for reducing datasets. Produces new text files """
 from os.path import join
 from collections import defaultdict
+import random
+import matplotlib.pyplot as plt
+import numpy as np
 
 # Settings
 data_path = "E:\LSID\dataset"
@@ -60,6 +63,28 @@ def reduce_dataset(camera='Fuji', subset='train', nr_short_per_gt=6):
     return len(gt_images), nr_short_images, dd
 
 
+def reduce_dataset_random(camera, subset, nr_images):
+    file_path = "{}_{}_list.txt".format(camera, subset)  # The text file to be reduced
+    file_path_reduced = join(data_path, file_path)[:-4] + '_random_{}.txt'.format(nr_images)  # where to save the new text file
+
+    files = open(join(data_path, file_path), 'r').readlines()
+
+    files_reduced = random.sample(files, nr_images)
+
+    with open(file_path_reduced, 'w') as new_txt_file:
+        for f in files_reduced:
+            new_txt_file.write(f)
+
+    # Count iso
+    files_reduced = open(file_path_reduced, 'r').readlines()
+    iso_arr = []
+    for f in files_reduced:
+        file_list = f.split()
+        iso_arr.append(int(file_list[2][3:]))
+
+    return iso_arr
+
+
 def main():
     for subset in ['train']:  # 'val', 'test'
         # Reduce dataset and create txt file
@@ -70,6 +95,15 @@ def main():
         print('Total nr gt:', nr_gt)
         print('Total nr short:', nr_short)
         print('nr images per shutter speed:', str(nr_per_shutter))
+
+        # RANDOM
+        random.seed(0)
+        iso_arr = reduce_dataset_random(camera='Sony', subset=subset, nr_images=600)
+
+        plt.hist(iso_arr, bins=100)
+        plt.xlabel('ISO')
+        plt.ylabel('Number of images')
+        plt.show()
 
 
 if __name__ == '__main__':
